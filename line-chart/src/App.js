@@ -1,5 +1,21 @@
+import * as React from 'react';
+import {useState, useEffect} from 'react';
 import {LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend} from 'recharts';
 import './App.css';
+
+function CustomTooltip(props, { active, payload, label }) {
+  console.log(props.payload);
+  console.log(props.sales);
+  if (active) {
+    return (
+      <div className="tooltip">
+        {/* <h4>{format(parseISO(label), "eeee, d MMM, yyyy")}</h4> */}
+        <p>${payload[0].value} CAD</p>
+      </div>
+    );
+  }
+  return null;
+}
 
 function App() {
   const data = [
@@ -46,6 +62,18 @@ function App() {
       "amt": 2100
     }
   ]
+
+  const [salesGraph, setSalesGraph] = useState(false);
+  const [shippedGraph, setShippedGraph] = useState(false);
+  const handleHover = (name) => {
+    // console.log(/val.payload,' ', name);
+    if (name == 'Sales') {
+      setSalesGraph(!salesGraph);
+    }
+    else {
+      setShippedGraph(!shippedGraph);
+    }
+  }
   return (
     <div className="App">
       <h1 className='headerH1'>Report POC</h1>
@@ -55,10 +83,10 @@ function App() {
           <CartesianGrid vertical = {false} strokeDasharray="3 3" />
           <XAxis dataKey="name"  tickLine={false}  />
           <YAxis tickLine={false} />
-          <Tooltip cursor={false}/>
+          <Tooltip cursor={false}  content={<CustomTooltip sales = {salesGraph} shipped ={shippedGraph}/>}/>
           {/* <Legend /> */}
-          <Line type="" dataKey="pv" stroke="#8884d8" activeDot={true} />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d"/>
+          <Line type="" dataKey="pv" stroke="#8884d8" activeDot={{onMouseOver: (e) => handleHover('Sale'), onMouseLeave: (e) => handleHover('Sale') }} />
+          <Line type="monotone" dataKey="uv" stroke="#82ca9d" activeDot={{onMouseOver: (e) => handleHover('Shipped'), onMouseLeave: (e) => handleHover('Shipped') }}/>
         </LineChart>
       </ResponsiveContainer>
     </div>
