@@ -35,19 +35,20 @@ const col = [
       }
 ]
 const data  = [23,234,234,234,435,12];
-
+const leftHeader = ['SHIPPED CASES', 'SHIPPED RETAIL', 'SALES', 'YEAR OVER YEAR', 'MARGIN']
 
 export default function TableData(props){
     console.log(props.col);
     console.log(props.data);
     return (
-        <TableContainer component={Paper} className={'tableContainer'} style= {{width: '650px', position: 'absolute', left: '140px'}}>
+        <TableContainer component={Paper} className={'tableContainer'} style= {{width: '1500px', position: 'absolute', left: '340px'}}>
             <Table className='table'>
                 <TableHead>
                     <TableRow>
+                        <TableCell>{'         '}</TableCell>
                         {
                             props.col.map((item) => (
-                                <TableCell key={item.label}>
+                                <TableCell key={item.label} style={{backgroundColor: 'lightgrey'}}>
                                     {item.label}
                                 </TableCell>
                             ))
@@ -58,7 +59,10 @@ export default function TableData(props){
                     
                         {
                             props.data.map((item, index) => (
-                                <TableRow key={index}>
+                                <TableRow key={index} >
+                                    <TableCell style={{backgroundColor: 'lightgrey'}}>
+                                        {leftHeader[index]}
+                                    </TableCell>
                                     <TableCell>
                                         {item}
                                     </TableCell>
